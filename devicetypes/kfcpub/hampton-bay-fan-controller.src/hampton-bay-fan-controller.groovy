@@ -11,6 +11,7 @@ metadata {
 		capability "Refresh"
         capability "Polling"
         capability "Sensor"
+        capability "Color Control"
 
 		command "low"
 		command "medium"
@@ -19,6 +20,7 @@ metadata {
 		command "breeze"
         command "setFanSpeed"  
         command "setLevel"  
+        command "setColor"  
         command "fanOn"  
         command "fanOff"  
 
@@ -188,6 +190,23 @@ def fanEvents(rawSpeed) {
 	}
 
 	return result
+}
+
+def setColor(color) {
+	log.info "In setColor $color"
+    if (17 == color.hue && 6 == color.saturation) {
+    	low()
+    } else if (10 == color.hue && 32 == color.saturation) {
+    	medium()
+    } else if (17 == color.hue && 16 == color.saturation) {
+    	mediumHigh()
+    } else if (8 == color.hue && 59 == color.saturation) {
+    	high()
+    } else if (8 == color.hue && 66 == color.saturation) {
+    	breeze()
+    } else {
+    	fanOff()
+    }
 }
 
 def setFanSpeed(speed) {
